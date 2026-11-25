@@ -2,6 +2,8 @@
 
 Low CPU guitar tuner with stereo pass-through
 
+<img width="400" height="149" alt="image" src="https://github.com/user-attachments/assets/277d79b8-d8f9-4afc-a925-05d9c37a1b84" />
+
 LV2 plugin built with [DPF](https://github.com/DISTRHO/DPF), with a native X11 GUI (Cairo) and a
 [zynthian](https://zynthian.org) UI widget (`zyngui:widget`) in the same bundle.
 
