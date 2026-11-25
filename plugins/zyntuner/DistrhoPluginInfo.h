@@ -1,12 +1,12 @@
 /*
- * Zyntuner - plugin description macros (DPF)
+ * zyntuner - plugin description macros (DPF)
  * See the DistrhoPluginInfo.h of the examples in dpf/examples for all the available macros.
  */
 
 #ifndef DISTRHO_PLUGIN_INFO_H_INCLUDED
 #define DISTRHO_PLUGIN_INFO_H_INCLUDED
 
-#define DISTRHO_PLUGIN_NAME  "Zyntuner"
+#define DISTRHO_PLUGIN_NAME  "zyntuner"
 #define DISTRHO_PLUGIN_URI   "https://zynthian.org/plugins/zyntuner"
 #define DISTRHO_PLUGIN_BRAND_ID  Zynt
 #define DISTRHO_PLUGIN_UNIQUE_ID zTun

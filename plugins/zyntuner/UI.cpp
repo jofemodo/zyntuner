@@ -1,5 +1,5 @@
 /*
- * Zyntuner - native GUI (DPF / DGL, Cairo backend, X11UI)
+ * zyntuner - native GUI (DPF / DGL, Cairo backend, X11UI)
  *
  * Generic GUI: one row per parameter. Controls: drag or scroll the bar, click toggles.
  * Outputs are drawn as meters. Replace with the GUI designed in SPEC.md.

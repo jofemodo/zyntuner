@@ -1,5 +1,5 @@
 /*
- * Zyntuner - parameters and port groups, shared by DSP (Plugin.cpp) and GUI (UI.cpp).
+ * zyntuner - parameters and port groups, shared by DSP (Plugin.cpp) and GUI (UI.cpp).
  * Symbols are stable API (presets, snapshots, MIDI learn, zynthian widget): don't rename them lightly.
  * Control pages in zynthian = port groups (4 controls per page).
  */

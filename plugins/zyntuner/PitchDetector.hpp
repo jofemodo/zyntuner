@@ -1,5 +1,5 @@
 /*
- * Zyntuner - low CPU monophonic pitch detector (decimated YIN, spread over the audio blocks)
+ * zyntuner - low CPU monophonic pitch detector (decimated YIN, spread over the audio blocks)
  *
  * Copyright (C) 2026 riban
  * License: GPL-3.0-or-later

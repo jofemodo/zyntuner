@@ -1,10 +1,10 @@
-# Zyntuner: specification
+# zyntuner: specification
 
 Living document: each decision made in the chat is written here before it's implemented.
 Status of each section: TODO / AGREED / DONE (implemented and tested on a zynthian).
 
 ## Identity — AGREED
-- Name: Zyntuner · symbol: `zyntuner` · URI: `https://zynthian.org/plugins/zyntuner`
+- Name: zyntuner · symbol: `zyntuner` · URI: `https://zynthian.org/plugins/zyntuner`
 - Maker: riban · license: GPL-3.0-or-later · LV2 category: lv2:AnalyserPlugin
 - Purpose: Low CPU guitar tuner with stereo pass-through
 

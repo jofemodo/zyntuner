@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-# Zyntuner - DPF based LV2 plugin with native X11 GUI (Cairo) and zynthian widget
+# zyntuner - DPF based LV2 plugin with native X11 GUI (Cairo) and zynthian widget
 
 include dpf/Makefile.base.mk
 

@@ -1,5 +1,5 @@
 {
-  "name": "Zyntuner",
+  "name": "zyntuner",
   "symbol": "zyntuner",
   "maker": "riban",
   "github": "riban-bw/zyntuner",
@@ -100,7 +100,7 @@
     "debian": "trixie"
   },
   "package": {
-    "name": "Zyntuner",
+    "name": "zyntuner",
     "category": "Plugins"
   }
 }

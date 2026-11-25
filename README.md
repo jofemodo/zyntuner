@@ -1,4 +1,4 @@
-# Zyntuner
+# zyntuner
 
 Low CPU guitar tuner with stereo pass-through
 

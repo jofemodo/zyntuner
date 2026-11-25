@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # ******************************************************************************
-# ZYNTHIAN PROJECT: Zynthian widget for "Zyntuner"
+# ZYNTHIAN PROJECT: Zynthian widget for "zyntuner"
 #
 # Plugin: <https://zynthian.org/plugins/zyntuner>
 # Declared as a zyngui:widget LV2 UI (see the bundle's manifest.ttl).

@@ -1,5 +1,5 @@
 /*
- * Zyntuner - DSP
+ * zyntuner - DSP
  * Low CPU guitar tuner with stereo pass-through
  *
  * Copyright (C) 2026 riban

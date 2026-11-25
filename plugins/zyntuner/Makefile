@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-# Zyntuner - plugin Makefile (DPF)
+# zyntuner - plugin Makefile (DPF)
 
 NAME = zyntuner
 
