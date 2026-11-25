@@ -1,0 +1,17 @@
+<h1>Zyntuner</h1>
+<p>Low CPU guitar tuner. Stereo audio passes through unchanged.</p>
+
+<h2>Widget</h2>
+<p>Play one string at a time. The note name is shown with its deviation in cents. The needle is left of centre when
+the note is flat and right when it is sharp. The colour is orange within 15 cents and green when in tune
+(within 3 cents). "--" means that no pitch is detected.</p>
+
+<h2>Controls</h2>
+<ul>
+  <li><b>A4 reference</b> (415 .. 466 Hz): tuning reference, normally 440 Hz</li>
+  <li><b>Threshold</b> (-80 .. -20 dB): signals below this level are ignored</li>
+  <li><b>Bypass</b>: stops the detection. Audio still passes</li>
+</ul>
+
+<h2>Tips</h2>
+<p>The left and right inputs are mixed for the detection. Raise the threshold if noise triggers the tuner.</p>

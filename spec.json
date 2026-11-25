@@ -1,0 +1,106 @@
+{
+  "name": "Zyntuner",
+  "symbol": "zyntuner",
+  "maker": "riban",
+  "github": "OWNER/zyntuner",
+  "unique_id": "zTun",
+  "description": "Low CPU guitar tuner with stereo pass-through",
+  "license": "GPL-3.0-or-later",
+  "lv2_category": "lv2:AnalyserPlugin",
+  "audio_inputs": 2,
+  "audio_outputs": 2,
+  "groups": [
+    {
+      "symbol": "tuner",
+      "name": "Tuner"
+    }
+  ],
+  "params": [
+    {
+      "symbol": "reference",
+      "name": "A4 reference",
+      "min": 415,
+      "max": 466,
+      "def": 440,
+      "unit": "Hz",
+      "group": "tuner"
+    },
+    {
+      "symbol": "threshold",
+      "name": "Threshold",
+      "min": -80,
+      "max": -20,
+      "def": -60,
+      "unit": "dB",
+      "group": "tuner"
+    },
+    {
+      "symbol": "bypass",
+      "name": "Bypass",
+      "min": 0,
+      "max": 1,
+      "def": 0,
+      "hints": [
+        "boolean"
+      ],
+      "designation": "bypass",
+      "group": "tuner"
+    }
+  ],
+  "outputs": [
+    {
+      "symbol": "note",
+      "name": "MIDI note",
+      "min": 0,
+      "max": 127,
+      "def": 0,
+      "hints": [
+        "integer"
+      ]
+    },
+    {
+      "symbol": "cents",
+      "name": "Cents",
+      "min": -50,
+      "max": 50,
+      "def": 0
+    },
+    {
+      "symbol": "valid",
+      "name": "Pitch valid",
+      "min": 0,
+      "max": 1,
+      "def": 0,
+      "hints": [
+        "boolean"
+      ]
+    }
+  ],
+  "widget": {
+    "half_height": true
+  },
+  "class": "Zyntuner",
+  "uri": "https://zynthian.org/plugins/zyntuner",
+  "brand_id": "Zynt",
+  "homepage": "https://zynthian.org",
+  "version": [
+    0,
+    1,
+    0
+  ],
+  "midi_input": false,
+  "midi_output": false,
+  "is_synth": false,
+  "port_extras": {},
+  "ui": {
+    "width": 640,
+    "height": 320
+  },
+  "ci": {
+    "debian": "trixie"
+  },
+  "package": {
+    "name": "Zyntuner",
+    "category": "Plugins"
+  }
+}

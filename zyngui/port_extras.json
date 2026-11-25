@@ -1,0 +1,6 @@
+{
+  "_comment": "Extra TTL statements per port symbol (or 'group:<symbol>'), added after the build. See references/dpf.md of the zynthian-lv2-plugin skill.",
+  "lv2_enabled": [
+    "<http://lv2plug.in/ns/ext/port-groups#group> <https://zynthian.org/plugins/zyntuner#portGroup_tuner>"
+  ]
+}
