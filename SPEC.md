@@ -51,4 +51,5 @@ Still the generated generic GUI (a bar per control and output).
 ## Open questions
 - Fourth control on the page (soft rule 2: 3 is acceptable)?
 - Native GUI: keep the generic one or draw the tuner?
-- GitHub: https://github.com/riban-bw/zyntuner
+- GitHub: https://github.com/riban-bw/zyntuner · release v0.1.0
+- Package: zynthian-packages PR: (pending)

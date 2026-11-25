@@ -3,7 +3,7 @@ icon: "Art/zui_control_widget_zyntuner.png"
 author: "riban"
 license: "GPL-3.0-or-later"
 source_url: "https://github.com/riban-bw/zyntuner.git"
-size: "TODO (zyn_device.sh package)"
+size: "292 KB"
 content: "zynthian-plugins/lv2/zyntuner.lv2"
 description: "Low CPU guitar tuner with stereo pass-through.<br/>
 
