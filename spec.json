@@ -2,7 +2,7 @@
   "name": "Zyntuner",
   "symbol": "zyntuner",
   "maker": "riban",
-  "github": "OWNER/zyntuner",
+  "github": "riban-bw/zyntuner",
   "unique_id": "zTun",
   "description": "Low CPU guitar tuner with stereo pass-through",
   "license": "GPL-3.0-or-later",

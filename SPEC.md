@@ -51,4 +51,4 @@ Still the generated generic GUI (a bar per control and output).
 ## Open questions
 - Fourth control on the page (soft rule 2: 3 is acceptable)?
 - Native GUI: keep the generic one or draw the tuner?
-- GitHub owner: `OWNER` is a placeholder in README, package and spec.json.
+- GitHub: https://github.com/riban-bw/zyntuner
