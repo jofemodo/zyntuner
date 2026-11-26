@@ -7,7 +7,7 @@ Low CPU tuner with soft mute and microtonal scales
 LV2 plugin built with [DPF](https://github.com/DISTRHO/DPF), with a native X11 GUI (Cairo) and a
 [zynthian](https://zynthian.org) UI widget (`zyngui:widget`) in the same bundle.
 
-- URI: `urn:riban.tuner`
+- URI: `urn:riban:tuner`
 - License: GPL-3.0-or-later
 
 ## Build

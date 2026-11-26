@@ -6,7 +6,7 @@
 
 REPO="zyntuner"
 GITHUB="riban-bw/zyntuner"
-PLUGIN_URI="urn:riban.tuner"
+PLUGIN_URI="urn:riban:tuner"
 
 DIRNAME="$REPO.lv2"
 REPO_URL="https://github.com/$GITHUB.git"

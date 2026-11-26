@@ -111,7 +111,7 @@
     "half_height": true
   },
   "class": "Zyntuner",
-  "uri": "urn:riban.tuner",
+  "uri": "urn:riban:tuner",
   "brand_id": "Zynt",
   "homepage": "https://zynthian.org",
   "version": [
