@@ -14,12 +14,12 @@ non-western scales. Like a tuner pedal, it mutes the sound while you tune.
 
 ## Installing
 
-**From the package catalog (recommended).** Install zyntuner from webconf's plugin package list. Updates are
+**From the zynthian package catalogue (recommended).** Install zyntuner from webconf's plugin package list. Updates are
 offered there when a new version is released.
 
-**Manually.** Download the bundle for your zynthian from the
-[releases page](https://github.com/riban-bw/zyntuner/releases): `zyntuner-lv2-arm64.tar.gz` for a Raspberry Pi
-based zynthian, `zyntuner-lv2-x86_64.tar.gz` for a PC. Install it with webconf's plugin install option.
+**Manually.** Download the bundle for your plugin host from the
+[releases page](https://github.com/riban-bw/zyntuner/releases): `zyntuner-lv2-arm64.tar.gz` for Raspberry Pi
+based, e.g. zynthian, `zyntuner-lv2-x86_64.tar.gz` for a PC. Install it with the host's installation mechanism, e.g. zynthian webconf's plugin install option.
 
 zyntuner is an **Audio Effect** in the **Analyzer** category.
 
@@ -37,7 +37,7 @@ Remember that **the chain is silent while the tuner is on**. Bypass the tuner to
 
 The sound fades out and in over 10 ms, so switching the tuner never clicks.
 
-Version 0.1 let the sound through while tuning. If you prefer that, put zyntuner on a separate chain fed by the same
+If you want to let the sound through while tuning, put zyntuner on a separate chain fed by the same
 input.
 
 ## Tuning
