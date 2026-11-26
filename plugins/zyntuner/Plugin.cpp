@@ -36,7 +36,7 @@ protected:
     const char* getMaker() const override { return "riban"; }
     const char* getHomePage() const override { return "https://zynthian.org"; }
     const char* getLicense() const override { return "GPL-3.0-or-later"; }
-    uint32_t getVersion() const override { return d_version(0, 2, 0); }
+    uint32_t getVersion() const override { return d_version(0, 2, 1); }
 
     // ----------------------------------------------------------------------------------------------------------------
     // Ports, parameters and groups (from ParamDefs.hpp)
