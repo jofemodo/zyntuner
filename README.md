@@ -9,6 +9,7 @@ LV2 plugin built with [DPF](https://github.com/DISTRHO/DPF), with a native X11 G
 
 - URI: `urn:riban:tuner`
 - License: GPL-3.0-or-later
+- **[User guide](docs/USER_GUIDE.md)**: installing, tuning, controls, the 18 scales and tunings, troubleshooting
 
 ## Build
 
