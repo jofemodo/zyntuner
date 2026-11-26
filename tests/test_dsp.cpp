@@ -19,7 +19,7 @@ static int fails = 0;
 static void check(bool ok, const char* what) { if (!ok) ++fails; printf("%s %s\n", ok ? "ok  " : "FAIL", what); }
 struct Host {
     const LV2_Descriptor* d; LV2_Handle h; double sr; int bs;
-    float ref = 440, thr = -60, en = 1, note = 0, cents = 0, valid = 0;
+    float ref = 440, thr = -60, en = 1, scale = 0, note = 0, cents = 0, valid = 0, degree = 0, octave = 0;
     std::vector<float> l, r, ol, orr; double worst = 0, total = 0;
     Host(const LV2_Descriptor* d, double sr, int bs) : d(d), sr(sr), bs(bs), l(bs), r(bs), ol(bs), orr(bs) {
         static LV2_URID_Map m{ nullptr, mapUri };
@@ -34,19 +34,21 @@ struct Host {
         const LV2_Feature* f[] = { &fm, &fo, nullptr };
         h = d->instantiate(d, sr, "", f);
         if (!h) { puts("instantiate failed"); exit(2); }
-        void* p[] = { l.data(), r.data(), ol.data(), orr.data(), &ref, &thr, &en, &note, &cents, &valid };
-        for (int i = 0; i < 10; ++i) d->connect_port(h, i, p[i]);
+        void* p[] = { l.data(), r.data(), ol.data(), orr.data(), &ref, &thr, &en, &scale, &note, &cents, &valid, &degree, &octave };
+        for (int i = 0; i < 13; ++i) d->connect_port(h, i, p[i]);
         d->activate(h);
     }
     ~Host() { d->deactivate(h); d->cleanup(h); }
-    bool same = true;
+    long t0 = 0; bool same = true; float maxOut = 0, maxStep = 0, lastOut = 0;
     template<class F> void run(double secs, F gen) {
-        for (long n = 0; n < secs * sr; n += bs) {
-            for (int i = 0; i < bs; ++i) { l[i] = gen((n + i) / sr); r[i] = -0.3f * l[i] + 0.0f; }
+        same = true; maxOut = 0; maxStep = 0;
+        for (long n = 0; n < secs * sr; n += bs, t0 += bs) {
+            for (int i = 0; i < bs; ++i) { l[i] = gen((t0 + i) / sr); r[i] = -0.3f * l[i] + 0.0f; }
             auto t = std::chrono::steady_clock::now(); d->run(h, bs);
             double e = std::chrono::duration<double>(std::chrono::steady_clock::now() - t).count();
             worst = std::max(worst, e); total += e;
-            for (int i = 0; i < bs; ++i) same &= ol[i] == l[i] && orr[i] == r[i];
+            for (int i = 0; i < bs; ++i) { same &= ol[i] == l[i] && orr[i] == r[i]; maxOut = std::max(maxOut, std::max(fabsf(ol[i]), fabsf(orr[i])));
+                maxStep = std::max(maxStep, fabsf(ol[i] - lastOut)); lastOut = ol[i]; }
         }
     }
 };
@@ -65,16 +67,43 @@ int main(int, char** a) {
                 s += (k == 1 ? .5 : 1. / k) * exp(-t * (.6 + .5 * k)) * sin(2 * M_PI * k * f * t + k); return float(.2 * s + .001 * noise()); });
             if (h.valid < .5 || h.note != n) { ++wrong; if (sr == 48000) printf("  wrong n=%d c=%g got %g %g v%g\n", n, c, h.note, h.cents, h.valid); }
             else maxErr = std::max(maxErr, fabs(h.cents - c));
-            if (!h.same) check(false, "passthrough");
+            if (h.maxOut != 0) check(false, "muted while enabled");
         }
         snprintf(b, 200, "%g Hz / %d: wrong %d of 70, max error %.2f cents", sr, bs, wrong, maxErr); check(!wrong && maxErr < 2, b);
     }
     auto sine = [](double t) { return float(.2 * sin(2 * M_PI * 110 * t)); };
     { Host h(d, 48000, 256); h.run(1, sine); check(h.valid > .5 && h.note == 45, "A2 sine");
       h.run(1, [](double) { return 0.f; }); check(h.valid < .5, "silence clears valid");
-      h.run(1, sine); h.en = 0; h.run(.1, sine); check(h.valid < .5 && h.same, "bypass: no pitch, audio passes");
-      h.en = 1; h.run(1, sine); check(h.valid > .5, "un-bypass recovers");
+      h.run(1, sine); check(h.maxOut == 0, "enabled: audio muted");
+      h.en = 0; h.run(.1, sine); check(h.valid < .5 && h.maxStep < .01, "bypass: no pitch, fade in without click");
+      h.run(.1, sine); check(h.same, "bypass: audio passes unchanged");
+      h.en = 1; h.run(.1, sine); check(h.maxStep < .01, "enable: fade out without click");
+      h.run(1, sine); check(h.valid > .5 && h.maxOut == 0, "un-bypass recovers, muted");
       h.ref = 432; h.run(.5, sine); check(fabs(h.cents - 31.77) < 1, "reference 432"); }
+    // Scales: {scale, frequency, degree, octave, cents}
+    { const double c4 = 440 * pow(2, -0.75);
+      struct T { int scale; double f; int degree, octave; double cents; const char* what; } ts[] = {
+        { 0, hz(64, 0), 4, 4, 0, "12-TET E4" },
+        { 0, 330, 4, 4, 1.96, "12-TET 330 Hz = E4 +2" },
+        { 0, hz(60, -10), 0, 4, -10, "12-TET C4 -10 (period wrap)" },
+        { 0, hz(59, 40), 11, 3, 40, "12-TET B3 +40" },
+        { 1, 330, 4, 4, 0, "Just E4 = 3/4 of A4" },
+        { 2, 440 * 81. / 64 * 16 / 27, 4, 4, 0, "Pythagorean E4" },
+        { 8, 440 * pow(2, 50 / 1200.), 19, 4, 0, "24-TET A+" },
+        { 9, 440 * pow(2, 1 / 31.), 24, 4, 0, "31-TET A+" },
+        { 10, 440 * pow(2, -1 / 53.), 39, 4, 0, "53-TET A-1" },
+        { 12, c4 * pow(2, 100 / 1200.), 0, 4, 100, "Slendro root +100" },
+        { 15, c4 * 11 / 8, 3, 4, 0, "Harmonic 11" },
+        { 16, c4 * 81 / 80 * 2, 1, 5, 0, "Partch 81/80" },
+        { 17, c4 * 3, 0, 5, 0, "Bohlen-Pierce tritave" },
+        { 17, c4 * pow(3, 1 / 13.) * pow(2, 5 / 1200.), 1, 4, 5, "Bohlen-Pierce step 1 +5" },
+      };
+      for (auto& t : ts) {
+        Host h(d, 48000, 256); h.scale = t.scale;
+        h.run(1, [&](double x) { return float(.2 * sin(2 * M_PI * t.f * x)); });
+        snprintf(b, 200, "%s: degree %g octave %g cents %.2f", t.what, h.degree, h.octave, h.cents);
+        check(h.valid > .5 && h.degree == t.degree && h.octave == t.octave && fabs(h.cents - t.cents) < 1, b);
+      } }
     { Host h(d, 48000, 256); int v = 0; for (int i = 0; i < 50; ++i) { h.run(.1, [](double) { return .2f * noise(); }); v += h.valid > .5; }
       snprintf(b, 200, "white noise: valid %d of 50", v); check(v < 5, b); }
     { Host h(d, 48000, 64); h.run(20, sine); printf("CPU active %.3f %% of realtime, worst 64-frame block %.0f us\n", h.total / 20 * 100, h.worst * 1e6); }

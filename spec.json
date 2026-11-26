@@ -4,7 +4,7 @@
   "maker": "riban",
   "github": "riban-bw/zyntuner",
   "unique_id": "zTun",
-  "description": "Low CPU guitar tuner with stereo pass-through",
+  "description": "Low CPU tuner with soft mute and microtonal scales",
   "license": "GPL-3.0-or-later",
   "lv2_category": "lv2:AnalyserPlugin",
   "audio_inputs": 2,
@@ -45,6 +45,17 @@
       ],
       "designation": "bypass",
       "group": "tuner"
+    },
+    {
+      "symbol": "scale",
+      "name": "Scale",
+      "min": 0,
+      "max": 17,
+      "def": 0,
+      "hints": [
+        "integer"
+      ],
+      "group": "tuner"
     }
   ],
   "outputs": [
@@ -61,8 +72,8 @@
     {
       "symbol": "cents",
       "name": "Cents",
-      "min": -50,
-      "max": 50,
+      "min": -150,
+      "max": 150,
       "def": 0
     },
     {
@@ -73,6 +84,26 @@
       "def": 0,
       "hints": [
         "boolean"
+      ]
+    },
+    {
+      "symbol": "degree",
+      "name": "Scale degree",
+      "min": 0,
+      "max": 63,
+      "def": 0,
+      "hints": [
+        "integer"
+      ]
+    },
+    {
+      "symbol": "octave",
+      "name": "Octave",
+      "min": -1,
+      "max": 10,
+      "def": 4,
+      "hints": [
+        "integer"
       ]
     }
   ],
@@ -85,7 +116,7 @@
   "homepage": "https://zynthian.org",
   "version": [
     0,
-    1,
+    2,
     0
   ],
   "midi_input": false,

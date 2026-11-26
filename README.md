@@ -1,6 +1,6 @@
 # zyntuner
 
-Low CPU guitar tuner with stereo pass-through
+Low CPU tuner with soft mute and microtonal scales
 
 <img width="400" height="149" alt="image" src="https://github.com/user-attachments/assets/277d79b8-d8f9-4afc-a925-05d9c37a1b84" />
 
@@ -38,6 +38,7 @@ then commit the new submodule pointer (`git add dpf`).
 |---|---|
 | `plugins/zyntuner/ParamDefs.hpp` | Parameters and port groups (shared by DSP and GUI) |
 | `plugins/zyntuner/Plugin.cpp` | DSP |
+| `zyngui/zyntuner_scales.py` | Scales and tunings (used by the widget, generates `plugins/zyntuner/Scales.hpp`) |
 | `plugins/zyntuner/UI.cpp` | Native GUI |
 | `zyngui/` | zynthian widget, help page, `zyngui:widget` declaration, port extras |
 | `tools/zyngui_bundle.py` | Adds the zyngui/ files to the bundle after DPF generates it |

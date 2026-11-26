@@ -1,6 +1,6 @@
 /*
  * zyntuner - DSP
- * Low CPU guitar tuner with stereo pass-through
+ * Low CPU tuner with soft mute and microtonal scales
  *
  * Copyright (C) 2026 riban
  * License: GPL-3.0-or-later
@@ -32,11 +32,11 @@ protected:
     // Information
 
     const char* getLabel() const override { return "zyntuner"; }
-    const char* getDescription() const override { return "Low CPU guitar tuner with stereo pass-through"; }
+    const char* getDescription() const override { return "Low CPU tuner with soft mute and microtonal scales"; }
     const char* getMaker() const override { return "riban"; }
     const char* getHomePage() const override { return "https://zynthian.org"; }
     const char* getLicense() const override { return "GPL-3.0-or-later"; }
-    uint32_t getVersion() const override { return d_version(0, 1, 0); }
+    uint32_t getVersion() const override { return d_version(0, 2, 0); }
 
     // ----------------------------------------------------------------------------------------------------------------
     // Ports, parameters and groups (from ParamDefs.hpp)
@@ -97,12 +97,14 @@ protected:
     {
         fDetector.setSampleRate(sampleRate);
         fDetector.setThreshold(fValues[kParamThreshold]);
+        fGainStep = static_cast<float>(1.0 / (kFadeTime * sampleRate));
     }
 
     void activate() override
     {
         fDetector.reset();
         fLastFreq = -1.0f;
+        fGain = fValues[kParamBypass] > 0.5f ? 1.0f : 0.0f;  // no fade on activation
         clearOutputs();
     }
 
@@ -114,14 +116,35 @@ protected:
         float* const outL = outputs[0];
         float* const outR = outputs[1];
 
-        // The audio is never modified, so bypass needs no crossfade: it only stops the detection
-        for (uint32_t i = 0; i < frames; ++i)
+        // Detection on the input, independent of the mute
+        if (!bypassed)
+            for (uint32_t i = 0; i < frames; ++i)
+                fDetector.push(0.5f * (inL[i] + inR[i]));
+
+        // Soft mute: the output fades out while the tuner is enabled and back in when it is bypassed
+        const float target = bypassed ? 1.0f : 0.0f;
+        if (fGain == target)
         {
-            const float l = inL[i], r = inR[i];
-            outL[i] = l;
-            outR[i] = r;
-            if (!bypassed)
-                fDetector.push(0.5f * (l + r));
+            if (bypassed)
+            {
+                if (outL != inL) std::memcpy(outL, inL, frames * sizeof(float));
+                if (outR != inR) std::memcpy(outR, inR, frames * sizeof(float));
+            }
+            else
+            {
+                std::memset(outL, 0, frames * sizeof(float));
+                std::memset(outR, 0, frames * sizeof(float));
+            }
+        }
+        else
+        {
+            const float step = bypassed ? fGainStep : -fGainStep;
+            for (uint32_t i = 0; i < frames; ++i)
+            {
+                fGain = std::max(0.0f, std::min(1.0f, fGain + step));
+                outL[i] = inL[i] * fGain;
+                outR[i] = inR[i] * fGain;
+            }
         }
 
         if (bypassed)
@@ -155,25 +178,63 @@ private:
     void updateOutputs()
     {
         const float freq = fDetector.frequency(), ref = fValues[kParamReference];
-        if (freq == fLastFreq && ref == fLastRef)
+        const int scaleIdx = std::max(0, std::min(static_cast<int>(kScaleCount) - 1,
+                                                  static_cast<int>(fValues[kParamScale] + 0.5f)));
+        if (freq == fLastFreq && ref == fLastRef && scaleIdx == fLastScale)
             return;
         fLastFreq = freq;
         fLastRef = ref;
+        fLastScale = scaleIdx;
         if (freq <= 0.0f)
         {
-            fValues[kParamValid] = 0.0f;  // note and cents keep their last values
+            fValues[kParamValid] = 0.0f;  // the other outputs keep their last values
             return;
         }
-        const float pitch = 69.0f + 12.0f * std::log2(freq / ref);
-        const float note = std::floor(pitch + 0.5f);
+
+        // Pitch in cents above the scale's root in octave 4 (period 4 for non-octave scales)
+        const ScaleDef& scale(kScales[scaleIdx]);
+        const double x = 1200.0 * std::log2(freq / ref) + scale.anchor;
+        double period = std::floor(x / scale.period);
+        const double r = x - period * scale.period;  // 0 .. period
+
+        // Nearest degree; the root of the next period is a candidate too (cents are ascending)
+        uint32_t degree = 0;
+        double target = 0.0;
+        for (uint32_t d = 0; d < scale.count; ++d)
+        {
+            if (std::fabs(r - scale.cents[d]) < std::fabs(r - target))
+            {
+                degree = d;
+                target = scale.cents[d];
+            }
+        }
+        double cents = r - target;
+        if (scale.period - r < std::fabs(cents))
+        {
+            degree = 0;
+            target = 0.0;
+            cents = r - scale.period;
+            period += 1.0;
+        }
+
+        // Nearest MIDI note (12-TET at the reference) of the target pitch, for compatibility
+        const double targetCents = period * scale.period + target - scale.anchor;  // above A4
+        const float note = static_cast<float>(std::floor(69.0 + targetCents / 100.0 + 0.5));
+
         fValues[kParamNote] = std::max(0.0f, std::min(127.0f, note));
-        fValues[kParamCents] = (pitch - note) * 100.0f;
+        fValues[kParamCents] = static_cast<float>(cents);
+        fValues[kParamDegree] = static_cast<float>(degree);
+        fValues[kParamOctave] = static_cast<float>(period + 4.0);
         fValues[kParamValid] = 1.0f;
     }
+
+    static constexpr double kFadeTime = 0.01;  // soft mute fade, seconds
 
     float fValues[kParamCount];
     PitchDetector fDetector;
     float fLastFreq = -1.0f, fLastRef = 0.0f, fLastThreshold = 1.0f;
+    int fLastScale = -1;
+    float fGain = 0.0f, fGainStep = 0.001f;
     bool fWasBypassed = false;
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ZyntunerPlugin)

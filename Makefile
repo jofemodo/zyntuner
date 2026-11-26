@@ -14,8 +14,12 @@ ifeq ($(HAVE_CAIRO),true)
 	$(MAKE) -C dpf/dgl cairo
 endif
 
-plugins: dgl
+plugins: dgl plugins/$(PLUGIN)/Scales.hpp
 	$(MAKE) all -C plugins/$(PLUGIN)
+
+# Scale tables for the DSP, from the table shared with the widget
+plugins/$(PLUGIN)/Scales.hpp: zyngui/zyntuner_scales.py
+	python3 zyngui/zyntuner_scales.py > $@.tmp && mv $@.tmp $@
 
 ifneq ($(CROSS_COMPILING),true)
 gen: plugins dpf/utils/lv2_ttl_generator
