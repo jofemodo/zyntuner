@@ -3,7 +3,7 @@ icon: "Art/zui_control_widget_zyntuner.png"
 author: "riban"
 license: "GPL-3.0-or-later"
 source_url: "https://github.com/riban-bw/zyntuner.git"
-size: "292 KB"
+size: "260 KB"
 content: "zynthian-plugins/lv2/zyntuner.lv2"
 description: "Low CPU tuner with soft mute and microtonal scales.<br/>
 
