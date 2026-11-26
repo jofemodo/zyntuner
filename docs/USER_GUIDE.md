@@ -1,6 +1,6 @@
 # zyntuner user guide
 
-zyntuner is a tuner for zynthian. It shows the note you play and how far it is from being in tune. It works with
+zyntuner is a tuner for zynthian (and other LV2 hosts). It shows the note you play and how far it is from being in tune. It works with
 standard western tuning and with 17 other scales and tunings, from historical temperaments to microtonal and
 non-western scales. Like a tuner pedal, it mutes the sound while you tune.
 
