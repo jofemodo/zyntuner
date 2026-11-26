@@ -166,8 +166,7 @@ are within 50 cents of the note. Watch the cents value to bring the note closer.
 - **Audio**: stereo in and out, no latency. The left and right inputs are mixed for the detection. While enabled the
   output is muted; while bypassed it is an exact copy of the input. Fades: 10 ms.
 - **CPU**: very low: about 0.15 % of one core on a zynthian V5 while detecting.
-- **Plugin URI**: `urn:riban:tuner` (LV2). Since version 0.2. Version 0.1 used
-  `https://zynthian.org/plugins/zyntuner`: snapshots made with 0.1 must be updated by adding the tuner again.
+- **Plugin URI**: `urn:riban:tuner` (LV2).
 - **Output ports** (for other hosts and widgets): `note` (nearest 12-TET MIDI note of the target note), `cents`,
   `valid` (1 = pitch detected), `degree` (index of the note in the scale, 0 = root) and `octave`.
 - **Native GUI**: a simple control panel, shown on zynthian's VNC display.
