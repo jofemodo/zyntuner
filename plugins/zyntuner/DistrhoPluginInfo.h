@@ -7,7 +7,7 @@
 #define DISTRHO_PLUGIN_INFO_H_INCLUDED
 
 #define DISTRHO_PLUGIN_NAME  "zyntuner"
-#define DISTRHO_PLUGIN_URI   "https://zynthian.org/plugins/zyntuner"
+#define DISTRHO_PLUGIN_URI   "urn:riban.tuner"
 #define DISTRHO_PLUGIN_BRAND_ID  Zynt
 #define DISTRHO_PLUGIN_UNIQUE_ID zTun
 

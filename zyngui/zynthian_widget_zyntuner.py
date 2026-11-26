@@ -2,7 +2,7 @@
 # ******************************************************************************
 # ZYNTHIAN PROJECT: Zynthian widget for "zyntuner"
 #
-# Plugin: <https://zynthian.org/plugins/zyntuner>
+# Plugin: <urn:riban.tuner>
 # Declared as a zyngui:widget LV2 UI (see the bundle's manifest.ttl).
 #
 # Data: LV2 output control ports ("monitors"), polled ~30 times/s while shown:
