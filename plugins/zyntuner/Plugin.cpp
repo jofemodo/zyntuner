@@ -104,7 +104,8 @@ protected:
     {
         fDetector.reset();
         fLastFreq = -1.0f;
-        fGain = fValues[kParamBypass] > 0.5f ? 1.0f : 0.0f;  // no fade on activation
+        fGain = fValues[kParamBypass] > 0.5f ? 1.0f : 0.0f;
+        fActivated = true;  // no fade on activation: the 1st run() applies the host's bypass state at once
         clearOutputs();
     }
 
@@ -123,6 +124,11 @@ protected:
 
         // Soft mute: the output fades out while the tuner is enabled and back in when it is bypassed
         const float target = bypassed ? 1.0f : 0.0f;
+        if (fActivated)
+        {
+            fActivated = false;
+            fGain = target;
+        }
         if (fGain == target)
         {
             if (bypassed)
@@ -236,6 +242,7 @@ private:
     int fLastScale = -1;
     float fGain = 0.0f, fGainStep = 0.001f;
     bool fWasBypassed = false;
+    bool fActivated = false;
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ZyntunerPlugin)
 };

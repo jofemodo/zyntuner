@@ -19,7 +19,7 @@ Pages = port groups, 4 controls per page in zynthian. Symbols are stable API.
 |---|---|---|---|---|---|---|---|
 | Tuner | `reference` | A4 reference | 415 .. 466 | 440 | Hz | float |  |
 | Tuner | `threshold` | Threshold | -80 .. -20 | -60 | dB | float |  |
-| Tuner | `bypass` | Bypass | 0 .. 1 | 0 |  | boolean | bypass |
+| Tuner | `bypass` | Bypass | 0 .. 1 | 1 (bypassed, audio passing) |  | boolean | bypass (LV2 `lv2_enabled`, default 0 set by `port_extras.json`) |
 | Tuner | `scale` | Scale | 0 .. 17 | 0 (12-TET) |  | enum | from `zyngui/zyntuner_scales.py`, new scales appended only |
 
 ## Outputs (LV2 output ports → widget monitors, ~30 Hz) — implemented, not tested on a zynthian
@@ -56,13 +56,15 @@ None.
 Half height: degree name of the selected scale with its octave, cents, needle (clamped at ±50 cents) and the
 scale name. Green within 3 cents, orange within 15, red beyond (theme colours).
 
-## Native GUI (X11, Cairo) — TODO
-Still the generated generic GUI (a bar per control and output).
+## Native GUI (X11, Cairo) — implemented, not tested on a zynthian
+Top: the zynthian widget's display (ticks every 10 cents, in-tune zone, needle clamped at ±50 cents, degree name
+with octave, cents, scale name; "BYPASSED" while bypassed). Bottom strip: knobs for A4 reference, threshold and scale,
+a slide switch for bypass, zynthian theme colours. Knobs: vertical drag / wheel (Shift: fine), double-click or
+Ctrl+click: default. Degree names come from `Scales.hpp` (generated with the names).
 
 ## Help page — implemented, not tested on a zynthian
 
 ## Open questions
 - Root/key for the just and historical temperaments (fixed to C now)?
-- Native GUI: keep the generic one or draw the tuner?
 - GitHub: https://github.com/riban-bw/zyntuner · release v0.1.0 · 0.2.0 (mute, scales) not released
 - Package: zynthian-packages PR: (pending)

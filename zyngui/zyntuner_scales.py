@@ -141,14 +141,18 @@ def header():
            "#pragma once", "", "#include <cstdint>", "",
            "struct ScaleDef {", "    const char* label;", "    double period;  // cents",
            "    double anchor;  // cents of the anchor (A4 = reference) above the root",
-           "    uint32_t count;", "    const double* cents;", "};", ""]
+           "    uint32_t count;", "    const double* cents;",
+           "    const char* const* names;  // degree names (native GUI)", "};", ""]
     for i, (label, period, anchor, degrees) in enumerate(SCALES):
         vals = ", ".join(f"{c:.6f}" for c, _ in degrees)
         out.append(f"static const double kScale{i}Cents[] = {{ {vals} }};")
+        names = ", ".join(f'"{n}"' for _, n in degrees)
+        out.append(f"static const char* const kScale{i}Names[] = {{ {names} }};")
     out += ["", f"static const uint32_t kScaleCount = {len(SCALES)};", "",
             "static const ScaleDef kScales[kScaleCount] = {"]
     for i, s in enumerate(SCALES):
-        out.append(f'    {{ "{s[0]}", {s[1]:.6f}, {anchor_cents(s):.6f}, {len(s[3])}, kScale{i}Cents }},')
+        out.append(f'    {{ "{s[0]}", {s[1]:.6f}, {anchor_cents(s):.6f}, {len(s[3])}, kScale{i}Cents, '
+                   f'kScale{i}Names }},')
     out += ["};", "", "static const char* const kScaleLabels[kScaleCount] = {"]
     out += [f'    "{s[0]}",' for s in SCALES]
     out += ["};", ""]

@@ -80,6 +80,9 @@ int main(int, char** a) {
       h.en = 1; h.run(.1, sine); check(h.maxStep < .01, "enable: fade out without click");
       h.run(1, sine); check(h.valid > .5 && h.maxOut == 0, "un-bypass recovers, muted");
       h.ref = 432; h.run(.5, sine); check(fabs(h.cents - 31.77) < 1, "reference 432"); }
+    // Default (lv2_enabled = 0 in the TTL): bypassed from the start, audio passes without a fade in
+    { Host h(d, 48000, 256); h.en = 0; h.run(.1, sine);
+      check(h.same && h.valid < .5, "default bypassed: audio passes from the start"); }
     // Scales: {scale, frequency, degree, octave, cents}
     { const double c4 = 440 * pow(2, -0.75);
       struct T { int scale; double f; int degree, octave; double cents; const char* what; } ts[] = {

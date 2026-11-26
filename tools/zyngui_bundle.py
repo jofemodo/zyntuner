@@ -5,7 +5,8 @@ DPF rewrites the bundle's TTL files on every build (make gen), so this runs afte
 - copies the widget files from zyngui/ (.py, .html and assets) into the bundle,
 - appends zyngui/zyngui.ttl (the zyngui:widget declaration) to manifest.ttl,
 - inserts zyngui/port_extras.json lines into <symbol>_dsp.ttl: zynthian metadata DPF can't express
-  ({"port_symbol": ["lv2:displayPriority 100", ...], "group:group_symbol": [...]}).
+  ({"port_symbol": ["lv2:displayPriority 100", ...], "group:group_symbol": [...]}),
+  and replaces port defaults ({"default:port_symbol": "0"}).
 
 usage: zyngui_bundle.py bin/<symbol>.lv2
 """
@@ -74,7 +75,16 @@ def main():
         for key, lines in extras.items():
             if key.startswith("_"):
                 continue  # comments
-            if key.startswith("group:"):
+            if key.startswith("default:"):
+                # Replace the port's lv2:default (DPF hardcodes it for designated ports, e.g. lv2_enabled = 1)
+                psym = key[len("default:"):]
+                m = re.search(r'lv2:symbol "%s" ;\n' % re.escape(psym), ttl)
+                found = m is not None
+                if found:
+                    end = ttl.find("]", m.end())
+                    block = re.sub(r'lv2:default [^ ;\n]+ ;', f"lv2:default {lines} ;", ttl[m.end():end], count=1)
+                    ttl = ttl[:m.end()] + block + ttl[end:]
+            elif key.startswith("group:"):
                 gsym = key[len("group:"):]
                 head = ttl.find(f"#portGroup_{gsym}>\n")
                 if head < 0:

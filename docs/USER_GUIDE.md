@@ -29,7 +29,8 @@ Add zyntuner as an audio effect on the chain of the instrument you want to tune,
 your guitar is plugged into. Put it **first** in the chain, before any distortion, pitch shifter or modulation
 effect: these make the pitch harder to read.
 
-Remember that **the chain is silent while the tuner is on**. Bypass the tuner to play. You can bypass it:
+A new tuner starts **bypassed**: the sound passes through unchanged until you switch the tuner on. Remember that
+**the chain is silent while the tuner is on**. Bypass the tuner again to play. You can switch it on and off:
 
 - with the **Bypass** control on the tuner's page,
 - from the chain view, like any other effect,
@@ -70,7 +71,7 @@ zynthian shows the four controls on one page, one per knob:
 |---|---|---|---|
 | **A4 reference** | 415 .. 466 Hz | 440 Hz | Frequency of A4, the pitch standard. Common values: 440 (modern standard), 442 / 443 (some orchestras), 432, 415 (baroque pitch, a semitone below 440), 466 (a semitone above 440) |
 | **Threshold** | -80 .. -20 dB | -60 dB | Signals quieter than this are ignored. Raise it if noise or hum makes the tuner show notes when you aren't playing |
-| **Bypass** | off / on | off | On: the tuner stops and the sound passes through unchanged. Off: the tuner works and the sound is muted |
+| **Bypass** | off / on | on | On: the tuner stops and the sound passes through unchanged. Off: the tuner works and the sound is muted |
 | **Scale** | 18 scales | 12-TET | The scale or tuning the notes are compared to. See below |
 
 ### About the reference
@@ -169,6 +170,8 @@ are within 50 cents of the note. Watch the cents value to bring the note closer.
 - **Plugin URI**: `urn:riban:tuner` (LV2).
 - **Output ports** (for other hosts and widgets): `note` (nearest 12-TET MIDI note of the target note), `cents`,
   `valid` (1 = pitch detected), `degree` (index of the note in the scale, 0 = root) and `octave`.
-- **Native GUI**: a simple control panel, shown on zynthian's VNC display.
+- **Native GUI**: the same tuner display as the zynthian widget (needle, note, octave, cents, scale) above knobs for
+  the reference, threshold and scale and a bypass switch. Knobs: drag up / down or use the mouse wheel (Shift: fine),
+  double-click or Ctrl+click for the default value. Shown on zynthian's VNC display and in desktop hosts.
 - The scale tables are in [`zyngui/zyntuner_scales.py`](../zyngui/zyntuner_scales.py), with the pitch of each note
   in cents.

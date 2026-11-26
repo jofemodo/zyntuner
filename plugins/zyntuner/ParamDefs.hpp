@@ -54,7 +54,7 @@ static const GroupDef kGroups[kGroupCount > 0 ? static_cast<uint32_t>(kGroupCoun
 static const ParamDef kParams[kParamCount] = {
     { "reference", "A4 reference", "Hz", 415.0f, 466.0f, 440.0f, kParameterIsAutomatable, 0, nullptr, 0, kParameterDesignationNull },
     { "threshold", "Threshold", "dB", -80.0f, -20.0f, -60.0f, kParameterIsAutomatable, 0, nullptr, 0, kParameterDesignationNull },
-    { "bypass", "Bypass", "", 0.0f, 1.0f, 0.0f, kParameterIsAutomatable | kParameterIsBoolean, 0, nullptr, 0, kParameterDesignationBypass },
+    { "bypass", "Bypass", "", 0.0f, 1.0f, 1.0f, kParameterIsAutomatable | kParameterIsBoolean, 0, nullptr, 0, kParameterDesignationBypass },
     { "scale", "Scale", "", 0.0f, kScaleCount - 1.0f, 0.0f, kParameterIsAutomatable | kParameterIsInteger, 0, kScaleLabels, kScaleCount, kParameterDesignationNull },
     { "note", "MIDI note", "", 0.0f, 127.0f, 0.0f, kParameterIsAutomatable | kParameterIsInteger | kParameterIsOutput, -1, nullptr, 0, kParameterDesignationNull },
     { "cents", "Cents", "", -150.0f, 150.0f, 0.0f, kParameterIsAutomatable | kParameterIsOutput, -1, nullptr, 0, kParameterDesignationNull },

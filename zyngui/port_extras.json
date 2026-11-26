@@ -1,6 +1,8 @@
 {
-  "_comment": "Extra TTL statements per port symbol (or 'group:<symbol>'), added after the build. See references/dpf.md of the zynthian-lv2-plugin skill.",
+  "_comment": "Extra TTL statements per port symbol (or 'group:<symbol>'), added after the build. 'default:<symbol>' replaces the port's lv2:default. See references/dpf.md of the zynthian-lv2-plugin skill.",
   "lv2_enabled": [
     "<http://lv2plug.in/ns/ext/port-groups#group> <urn:riban:tuner#portGroup_tuner>"
-  ]
+  ],
+  "_comment_default": "Disabled (bypassed, audio passing) by default: DPF always writes lv2_enabled default 1",
+  "default:lv2_enabled": "0"
 }
